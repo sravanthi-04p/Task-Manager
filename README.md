@@ -49,25 +49,3 @@ npm run dev           # starts on http://localhost:5173
 ```
 
 Open http://localhost:5173, register an account, and start creating tasks.
-
-## Why MySQL instead of MongoDB here
-- The models (`backend/models/User.js`, `backend/models/Task.js`) use plain
-  parameterized SQL queries via `mysql2/promise` — no Mongoose syntax, no
-  schema-less documents. If you already know SQL joins/filters, this will
-  feel familiar.
-- `backend/sql/schema.sql` is the single source of truth for your tables —
-  open it any time to see exactly what's stored, no hidden ODM magic.
-- Everything else (Express routes, JWT auth, React frontend) stays the same
-  shape as the original MERN reference doc, so this is still a legitimate
-  answer to "build a full-stack task app" even though it's MySQL instead of Mongo.
-
-## Talking points for interviews
-- Explain the trade-off: MongoDB is schema-flexible and horizontally scalable;
-  MySQL enforces referential integrity (the `ON DELETE CASCADE` foreign key
-  from tasks → users) and is a better fit when your data is naturally relational.
-- Walk through the dynamic filter-building in `Task.js findAllForUser()` —
-  it's a good example of building parameterized SQL safely (no string
-  concatenation, no SQL injection risk).
-- Mention the fire-and-forget pattern for email/weather in `taskController.js`
-  createTask — the API responds immediately and side effects happen after,
-  so a slow third-party API never blocks the user.
